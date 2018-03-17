@@ -121,10 +121,8 @@ int main(int argc, char *argv[]){
         }
         else
           // If exit != 0
-					if(access(VRFFILE, F_OK) != -1) //File exists?
-						unlink(VRFFILE); 
-
-				
+          if(access(VRFFILE, F_OK) != -1) //File exists?
+            unlink(VRFFILE); 
 			} 
 		}
 
