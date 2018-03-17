@@ -71,13 +71,7 @@ int main(int argc, char *argv[]){
     if(fork() == 0){
 
       // Check if program is even executable
-      if(!(!access(PROGRAM, F_OK) && !access(PROGRAM, R_OK) && !access(PROGRAM, X_OK))){
-        fprintf(stderr, "ERROR: It is not possible to execute %s: ", PROGRAM);
-        if(access(PROGRAM, F_OK)) fprintf(stderr, "It does not exist.\n");
-        else fprintf(stderr, "Access denied. (Are you root?)\n");
-        return 1;
-      }
-      else{
+      if(!access(PROGRAM, F_OK) && !access(PROGRAM, R_OK) && !access(PROGRAM, X_OK)){
 
         // Exec program silently by default
         if(!verbose){
@@ -90,6 +84,14 @@ int main(int argc, char *argv[]){
         }
         else
           execlp(PROGRAM, PROGRAM, NULL);       
+      }
+      else{
+
+        fprintf(stderr, "ERROR: It is not possible to execute %s: ", PROGRAM);
+        if(access(PROGRAM, F_OK)) fprintf(stderr, "It does not exist.\n");
+        else fprintf(stderr, "Access denied. (Are you root?)\n");
+        return 1;
+
       }      
     } 
 
