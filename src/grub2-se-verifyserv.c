@@ -37,19 +37,19 @@ void help(){
 }
 
 void sig_handler(int signo){
-	if(signo == SIGTERM || signo == SIGINT){
-		// Unverify
-		if(access(VRFFILE, F_OK) != -1){ //File exists?
-			unlink(VRFFILE);
+  if(signo == SIGTERM || signo == SIGINT){
+    // Unverify
+    if(access(VRFFILE, F_OK) != -1){ //File exists?
+      unlink(VRFFILE);
     }
-		exit(0);
-	}
+    exit(0);
+  }
 }
 
 int main(int argc, char *argv[]){
   const char prog;
-	int verbose = 0;
-	int statval;
+  int verbose = 0;
+  int statval;
 
 
   // Argument handling
@@ -62,14 +62,13 @@ int main(int argc, char *argv[]){
       verbose = 1;
   }
   
-	// Signal handling
-	if(signal(SIGTERM, sig_handler) == SIG_ERR || signal(SIGINT, sig_handler) == SIG_ERR)
-		printf("ERROR: Can't catch signal!");
+  // Signal handling
+  if(signal(SIGTERM, sig_handler) == SIG_ERR || signal(SIGINT, sig_handler) == SIG_ERR)
+    printf("ERROR: Can't catch signal!");
   
-	while(1){	
+  while(1){  
 
-		if(fork() == 0){
-
+    if(fork() == 0){
 
       // Check if program is even executable
       if(!(!access(PROGRAM, F_OK) && !access(PROGRAM, R_OK) && !access(PROGRAM, X_OK))){
@@ -77,58 +76,55 @@ int main(int argc, char *argv[]){
         if(access(PROGRAM, F_OK)) fprintf(stderr, "It does not exist.\n");
         else fprintf(stderr, "Access denied. (Are you root?)\n");
         return 1;
-
       }
       else{
 
-  			// Exec program silently by default
+        // Exec program silently by default
         if(!verbose){
-    			int fd = open("/dev/null", O_WRONLY | O_CREAT, 0666);		
+          int fd = open("/dev/null", O_WRONLY | O_CREAT, 0666);    
 
-  	  		dup2(fd, 1);
-  		  	dup2(fd, 2);
+          dup2(fd, 1);
+          dup2(fd, 2);
           execlp(PROGRAM, PROGRAM, NULL);
-	  		  close(fd);
+          close(fd);
         }
         else
-          execlp(PROGRAM, PROGRAM, NULL);
-       
-      }
+          execlp(PROGRAM, PROGRAM, NULL);       
+      }      
+    } 
 
-      
-		} 
-		else {
+    else {
 
-			if(verbose) 
-				printf("Waiting for %d...\n", getpid());
+      if(verbose) 
+        printf("Waiting for %d...\n", getpid());
 
-			wait(&statval);
-			if(WIFEXITED(statval)){
-				if(verbose) 
-					printf("Exit: %d\n", statval);
+      wait(&statval);
+      if(WIFEXITED(statval)){
+        if(verbose) 
+          printf("Exit: %d\n", statval);
 
-				if(statval == STATUS_OK){
-          // If exit 0, write file with nothing in it
-					FILE *f = fopen(VRFFILE, "w");
-					if(f == NULL){
-						printf("ERROR opening file");
-						exit(1);
-					}
-					fclose(f);
-				} 
-				else if(statval == 256){
+        if(statval == STATUS_OK){
+          // If exit is STATUS_OK, write file with nothing in it
+          FILE *f = fopen(VRFFILE, "w");
+          if(f == NULL){
+            printf("ERROR opening file");
+            return 1;
+          }
+          fclose(f);
+        } 
+        else if(statval == 256){
           return 1;
         }
         else
           // If exit != 0
           if(access(VRFFILE, F_OK) != -1) //File exists?
             unlink(VRFFILE); 
-			} 
-		}
+      } 
+    }
 
-  	sleep(SLEEP);
-	}
-	
+    sleep(SLEEP);
+  }
+
 
   sig_handler(SIGTERM);
   return 0;
