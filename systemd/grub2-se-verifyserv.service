@@ -1,0 +1,8 @@
+[Unit]
+
+
+[Service]
+ExecStart=/usr/local/sbin/grub2-se-verifyserv
+
+[Install]
+WantedBy=default.target
