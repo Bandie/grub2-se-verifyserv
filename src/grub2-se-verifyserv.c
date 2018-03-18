@@ -47,7 +47,6 @@ void sig_handler(int signo){
 }
 
 int main(int argc, char *argv[]){
-  const char prog;
   int verbose = 0;
   int statval;
 
