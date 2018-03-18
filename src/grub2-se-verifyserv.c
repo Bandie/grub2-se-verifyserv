@@ -59,7 +59,6 @@ int main(int argc, char *argv[]){
   int verbose = 0;
   int statval;
 
-
   // Argument handling
   for(int i=0; i<argc; i++){
     if(!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")){
@@ -77,7 +76,6 @@ int main(int argc, char *argv[]){
   while(1){  
 
     if(fork() == 0){
-
       // Exec program silently by default
       if(!verbose){
         int fd = open("/dev/null", O_WRONLY | O_CREAT, 0666);    
@@ -92,8 +90,8 @@ int main(int argc, char *argv[]){
       else{
         if(execlp(PROGRAM, PROGRAM, NULL) < 0)
           exec_failed();
-        
-      }      
+      } 
+
     }
     else {
 
@@ -101,27 +99,23 @@ int main(int argc, char *argv[]){
         printf("Waiting for %d...\n", getpid());
 
       wait(&statval);
-      if(WIFEXITED(statval)){
-        if(verbose) 
-          printf("Exit: %d\n", statval);
+      if(verbose) 
+        printf("Exit: %d\n", statval);
 
-        if(statval == STATUS_OK){
-          // If exit is STATUS_OK, write file with nothing in it
-          FILE *f = fopen(VRFFILE, "w");
-          if(f == NULL){
-            printf("ERROR opening file");
-            return 1;
-          }
-          fclose(f);
-        } 
-        else if(statval == 256){
+      if(statval == STATUS_OK){
+        // If exit is STATUS_OK, write file with nothing in it
+        FILE *f = fopen(VRFFILE, "w");
+        if(f == NULL){
+          printf("ERROR opening file");
           return 1;
         }
-        else
-          // If exit != 0
-          if(access(VRFFILE, F_OK) != -1) //File exists?
-            unlink(VRFFILE); 
+        fclose(f);
       } 
+      else
+        // If exit != 0
+        if(access(VRFFILE, F_OK) != -1) //File exists?
+          unlink(VRFFILE); 
+      
     }
 
     sleep(SLEEP);

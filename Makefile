@@ -21,5 +21,4 @@ uninstall:
 
 clean:
 	rm bin/grub2-se-verifyserv
-
-
+	rmdir bin
