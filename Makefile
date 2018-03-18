@@ -1,4 +1,4 @@
-# Makefile for grub2-sign-extension
+# Makefile for grub2-se-verifyserv
 # Author: Bandie Canis 
 # Licence: GNU-GPLv3
 
