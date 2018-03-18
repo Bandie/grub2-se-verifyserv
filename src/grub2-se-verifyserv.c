@@ -36,6 +36,15 @@ void help(){
          "}\n\n", PROGRAM, VRFFILE, VRFFILE);
 }
 
+void exec_failed(){
+  fprintf(stderr, "ERROR: It is not possible to execute %s: ", PROGRAM);
+  if(access(PROGRAM, F_OK)) fprintf(stderr, "It does not exist (in your PATH variable).\n");
+  else fprintf(stderr, "Access denied. (Are you root?)\n");
+  if(access(VRFFILE, F_OK) != -1)
+    unlink(VRFFILE);
+  exit(EXIT_FAILURE);
+}
+
 void sig_handler(int signo){
   if(signo == SIGTERM || signo == SIGINT){
     // Unverify
@@ -69,31 +78,23 @@ int main(int argc, char *argv[]){
 
     if(fork() == 0){
 
-      // Check if program is even executable
-      if(!access(PROGRAM, F_OK) && !access(PROGRAM, R_OK) && !access(PROGRAM, X_OK)){
+      // Exec program silently by default
+      if(!verbose){
+        int fd = open("/dev/null", O_WRONLY | O_CREAT, 0666);    
 
-        // Exec program silently by default
-        if(!verbose){
-          int fd = open("/dev/null", O_WRONLY | O_CREAT, 0666);    
-
-          dup2(fd, 1);
-          dup2(fd, 2);
-          execlp(PROGRAM, PROGRAM, NULL);
-          close(fd);
+        dup2(fd, 1);
+        dup2(fd, 2);
+        if(execlp(PROGRAM, PROGRAM, NULL) < 0){
+          exec_failed();
         }
-        else
-          execlp(PROGRAM, PROGRAM, NULL);       
+        close(fd);
       }
       else{
-
-        fprintf(stderr, "ERROR: It is not possible to execute %s: ", PROGRAM);
-        if(access(PROGRAM, F_OK)) fprintf(stderr, "It does not exist.\n");
-        else fprintf(stderr, "Access denied. (Are you root?)\n");
-        return 1;
-
+        if(execlp(PROGRAM, PROGRAM, NULL) < 0){
+          exec_failed();
+        }
       }      
-    } 
-
+    }
     else {
 
       if(verbose) 
