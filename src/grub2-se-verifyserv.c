@@ -1,6 +1,6 @@
 /*
 FILENAME :     grub2-se-verifyserv.c
-DESCRIPTION :  Service which touches a file to VRFFILE if the returncode is 0.
+DESCRIPTION :  Service which touches a file to VRFFILE if the return code of PROGRAM is STATUS_OK.
 AUTHOR :       Bandie
 DATE :         2018-03-17T20:31:48+01:00
 LICENSE :      GNU-GPLv3
