@@ -48,9 +48,9 @@ void exec_failed(){
 void sig_handler(int signo){
   if(signo == SIGTERM || signo == SIGINT){
     // Unverify
-    if(access(VRFFILE, F_OK) != -1){ //File exists?
+    if(access(VRFFILE, F_OK) != -1) //File exists?
       unlink(VRFFILE);
-    }
+    
     exit(0);
   }
 }
@@ -84,15 +84,15 @@ int main(int argc, char *argv[]){
 
         dup2(fd, 1);
         dup2(fd, 2);
-        if(execlp(PROGRAM, PROGRAM, NULL) < 0){
+        if(execlp(PROGRAM, PROGRAM, NULL) < 0)
           exec_failed();
-        }
+        
         close(fd);
       }
       else{
-        if(execlp(PROGRAM, PROGRAM, NULL) < 0){
+        if(execlp(PROGRAM, PROGRAM, NULL) < 0)
           exec_failed();
-        }
+        
       }      
     }
     else {
