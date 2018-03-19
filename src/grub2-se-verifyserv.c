@@ -100,9 +100,9 @@ int main(int argc, char *argv[]){
 
       wait(&statval);
       if(verbose) 
-        printf("Exit: %d\n", statval);
+        printf("Exit: %d\n", WEXITSTATUS(statval));
 
-      if(statval == STATUS_OK){
+      if(WEXITSTATUS(statval) == STATUS_OK){
         // If exit is STATUS_OK, write file with nothing in it
         FILE *f = fopen(VRFFILE, "w");
         if(f == NULL){
