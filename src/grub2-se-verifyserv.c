@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
   
   // Signal handling
   if(signal(SIGTERM, sig_handler) == SIG_ERR || signal(SIGINT, sig_handler) == SIG_ERR)
-    printf("ERROR: Can't catch signal!");
+    fprintf(stderr, "ERROR: Can't catch signal!\n");
   
   while(1){  
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]){
         if(access(VRFFILE, F_OK) == -1){
           FILE *f = fopen(VRFFILE, "w");
           if(f == NULL){
-            printf("ERROR opening file");
+            fprintf(stderr, "ERROR opening file\n");
             return 1;
           }
           fclose(f);
@@ -116,14 +116,10 @@ int main(int argc, char *argv[]){
       else
         // If exit != 0
         if(access(VRFFILE, F_OK) != -1) //File exists?
-          unlink(VRFFILE); 
-      
+          unlink(VRFFILE);  
     }
-
     sleep(SLEEP);
   }
-
-
   sig_handler(SIGTERM);
   return 0;
 }
