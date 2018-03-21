@@ -13,10 +13,12 @@ install:
 	chown root:root /usr/local/sbin/grub2-se-verifyserv
 	chmod 740 /usr/local/sbin/grub2-se-verifyserv
 	@printf "Done.\n"
-	@printf "You may want to enable and start the service: \"systemctl enable grub2-se-verifyserv ; systemctl start grub2-se-verifyserv\"\n"	@printf "The file will be called /verified"
+	@printf "You may want to enable and start the service: \"systemctl enable grub2-se-verifyserv ; systemctl start grub2-se-verifyserv\"\n"	
+	@printf "The file will be called /verified\n"
 
 uninstall:
 	rm /usr/sbin/local/grub2-se-verifyserv
+	rm /etc/systemd/system/grub2-se-verifyserv.service
 	@printf "Done.\n"
 
 clean:

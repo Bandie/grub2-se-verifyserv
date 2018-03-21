@@ -104,12 +104,14 @@ int main(int argc, char *argv[]){
 
       if(WEXITSTATUS(statval) == STATUS_OK){
         // If exit is STATUS_OK, write file with nothing in it
-        FILE *f = fopen(VRFFILE, "w");
-        if(f == NULL){
-          printf("ERROR opening file");
-          return 1;
+        if(access(VRFFILE, F_OK) == -1){
+          FILE *f = fopen(VRFFILE, "w");
+          if(f == NULL){
+            printf("ERROR opening file");
+            return 1;
+          }
+          fclose(f);
         }
-        fclose(f);
       } 
       else
         // If exit != 0
