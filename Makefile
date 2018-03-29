@@ -4,7 +4,7 @@
 
 all: 
 	mkdir -p bin
-	cc src/grub2-se-verifyserv.c -o bin/grub2-se-verifyserv
+	cc --std=c99 src/grub2-se-verifyserv.c -o bin/grub2-se-verifyserv
 
 install:
 	mkdir -p /usr/local/sbin
