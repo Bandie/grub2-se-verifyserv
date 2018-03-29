@@ -24,3 +24,6 @@ uninstall:
 clean:
 	rm bin/grub2-se-verifyserv
 	rmdir bin
+
+test:
+	@printf "What to test?"

@@ -1,5 +1,4 @@
-# grub2-se-verifyserv
-
+# grub2-se-verifyserv [![Build Status](https://travis-ci.org/Bandie/grub2-se-verifyserv.svg?branch=master)](https://travis-ci.org/Bandie/grub2-se-verifyserv)
 
 ## Purpose
 After a kernel upgrade you may forgot to sign your kernel using the [grub2-signing-extension scripts](https://github.com/Bandie/grub2-signing-extension) again. 
