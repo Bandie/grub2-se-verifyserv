@@ -17,7 +17,7 @@ LICENSE :      GNU-GPLv3
 
 #define VRFFILE "/verified"
 #define SLEEP 20
-#define PROGRAM "/usr/bin/grub2-verify"
+#define PROGRAM "/usr/sbin/grub-verify"
 #define STATUS_OK 0
 
 void help(){
